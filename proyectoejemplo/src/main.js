@@ -14,6 +14,22 @@ Vue.use(IconsPlugin)
 
 Vue.config.productionTip = false
 
+//directivas personalizadas
+//envía el enfoque a un elemento html, input
+Vue.directive('focus',{
+  inserted(el){
+    el.focus();
+  }
+});
+
+Vue.directive('color',{
+  bind(el, binding){
+    el.style.color=binding.value;
+  }
+});
+
+
 new Vue({
   render: h => h(App),
 }).$mount('#app')
+

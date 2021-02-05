@@ -1,10 +1,11 @@
 <template>
   <div class="hello">
-    <h1>{{ msg }}</h1>
+    <h1 v-color="'green'">{{ msg }}</h1>
     
 
     <!--a v-bind:href="ruta">Enlace</!--a-->
     <span v-html="mensajeHTML"></span>
+    <h3 v-mensaje="'red'"></h3>
 
     <b-form>
         <b-row class="my-1">
@@ -12,7 +13,8 @@
                 <label for="nombre">Escriba el nombre</label>
             </b-col>
             <b-col sm="3">
-                <b-form-input type="text" v-model="nombre" placeholder="Jose Flores"></b-form-input>
+              <!--agregamos la directiva creada en la definicion del elemento-->
+                <b-form-input v-focus type="text" v-model="nombre" placeholder="Jose Flores"></b-form-input>
             </b-col>
         </b-row>
          <b-row class="my-1">
@@ -67,11 +69,11 @@
               <b-td>{{ dato.sexo =='m'?'Masculino' : 'Femenino'}}</b-td>              
               <b-td>
                   <span v-if="actualizarF &&  idActualizar==index">
-                      <button v-on:click="guardarActualizacion(index)" class="btn btn-success">Guardar</button>
+                      <b-button variant="primary" v-on:click="guardarActualizacion(index)">Guardar</b-button>
                   </span>
                   <span v-else>
-                      <button v-on:click="actualizar(index)" class="btn btn-warning">Actualizar</button>
-
+                      <b-button variant="success" v-on:click="actualizar(index)">Actualizar</b-button>
+                      <b-button variant="danger" v-on:click="eliminar(index)">Eliminar</b-button>
                   </span>
               </b-td>
           </b-tr>
@@ -94,7 +96,7 @@ export default {
                     {nombre: 'Jose', edad:5, sexo: 'm'},
                     {nombre: 'Maritza', edad:15, sexo: 'f'}
                 ],*/
-                id:0,
+                id:1,
                 idActualizar:-1,
                 nombre:'',
                 edad:'',
@@ -117,7 +119,7 @@ export default {
     }  
   },
   methods:{
-       agregarDato(){
+      agregarDato(){
                     this.arreglo.push({
                        id:this.id++, nombre: this.nombre, edad: this.edad, sexo: this.sexo
                     });
@@ -134,10 +136,21 @@ export default {
         this.actualizarF=false;
         this.arreglo[registro_id].nombre= this.nuevoNombre,
         this.arreglo[registro_id].edad=this.nuevaEdad
-      }
-     
+      },
+     eliminar(registro_id){
+       //borrar elemento de la lista
+        this.arreglo.splice(registro_id, 1);
+     }
 
-}
+},
+  directives:{
+    mensaje:{
+      bind:function(el, binding){
+        el.innerHTML="Mensaje desde directiva"
+        el.style.color=binding.value
+      }
+    }
+  }
 }
 </script>
 
