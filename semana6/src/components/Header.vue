@@ -15,6 +15,7 @@
             <b-nav-item v-bind:to="{path:'/'}">Home</b-nav-item>
             <b-nav-item v-bind:to="{path:'/about'}">About</b-nav-item>
             <b-nav-item v-bind:to="{path:'/pagina'}">Pagina</b-nav-item>
+            <a href="#" @click="logout">Logout</a>
         </b-navbar-nav>
       </b-navbar>
 
@@ -35,6 +36,8 @@
 </template>
 
 <script lang="js">
+import firebase from 'firebase/app';
+import 'firebase/auth';
 
   export default  {
     name: 'src-components-header',
@@ -48,7 +51,9 @@
       }
     },
     methods: {
-
+        logout(){
+             firebase.auth().signOut().then(()=>this.$router.replace('/login'))
+        }
     },
     computed: {
 

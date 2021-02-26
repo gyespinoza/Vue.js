@@ -1,15 +1,23 @@
 <template lang="html">
 
   <section class="src-components-index">
-    <h1>src-components-index Component</h1>
+
+    <Header/>
+
+    <h1>Bienvenido</h1>
+
   </section>
 
 </template>
 
 <script lang="js">
+import Header from "./Header.vue"
 
   export default  {
     name: 'src-components-index',
+    components:{
+      Header
+    },
     props: [],
     mounted () {
 
