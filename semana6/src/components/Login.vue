@@ -12,8 +12,13 @@
             <b-form-group label="Clave:" description="Escriba la clave">
               <b-form-input v-model="clave" type="password" placeholder="*****" required></b-form-input>
             </b-form-group>
-            <b-button variant="primary" @click="login()">Iniciar sesión</b-button>
-            <b-button variant="primary" @click="login()">Registro</b-button>
+            <b-form-group>
+               <input type="checkbox" v-model="poseeCuenta"><span>Ya poseo una cuenta!</span><br/>
+            </b-form-group>           
+            <!--se evalua poseeCuenta, si el usuario ya esta registrado mostrara el boton iniciar sesion
+            de lo contrario mostrara el boto de registro-->
+            <b-button variant="primary" @click="login()" v-if="poseeCuenta">Iniciar sesión</b-button>
+            <b-button variant="success" @click="login()" v-if="!poseeCuenta">Registro</b-button>
             <b-button variant="danger" type="reset">Limpiar</b-button>
           </b-form>
         </b-card>
@@ -35,7 +40,8 @@ import 'firebase/auth';
     data () {
       return {
           correo:'',
-          clave:''
+          clave:'',
+          poseeCuenta:''
       }
     },
     methods: {

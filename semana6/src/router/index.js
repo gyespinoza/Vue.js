@@ -1,8 +1,10 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
-import Login from "../components/Login.vue";
+import Login from "../views/Login.vue";
+import Perfil from "../views/Perfil.vue";
 import firebase from 'firebase';
+import 'firebase/auth'
 
 
 Vue.use(VueRouter);
@@ -12,7 +14,7 @@ const routes = [
     path: "/",
     name: "Home",
     component: Home,
-    meta:{
+    meta:{ //adjunta informacion a rutas
       auth:true
     }
   },
@@ -23,13 +25,27 @@ const routes = [
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: () =>
-      import(/* webpackChunkName: "about" */ "../views/About.vue")
+      import(/* webpackChunkName: "about" */ "../views/About.vue"),
+    meta:{
+        auth:true
+      }
   },
   {
     path:"/pagina",
     name:"Pagina 1",
     component: () =>
-      import("../views/pagina1.vue")
+      import("../views/pagina1.vue"),
+    meta:{
+        auth:true
+      }     
+  },
+  {
+    path:'/profile',
+    name:"Perfil",
+    component: Perfil,
+    meta:{
+        auth:true
+    }     
   },
   {
     path:"*",
@@ -47,22 +63,25 @@ const router = new VueRouter({
 });
 
 
-router.beforeEach((to, from, next) => {
-  if (to.matched.some(record => record.meta.requiresAuth)) {
-    // this route requires auth, check if logged in
-    // if not, redirect to login page.
-    if (!auth.loggedIn()) {
-      next({
-        path: '/login',
-        query: { redirect: to.fullPath }
-      })
-    } else {
-      next()
-    }
+//navigation guards
+//se utiliza para proteger la navegacion del sitio
+//to: Route: el objeto de ruta de destino al que se está navegando.
+//from: Route: la ruta actual de la que se está navegando.
+//next: Function: ruta hacia donde se navegara
+router.beforeEach((to, from, next) => { 
+  const currentUser = firebase.auth().currentUser;
+  const auth = to.matched.some(record => record.meta.auth);
+
+  if (auth && !currentUser) {
+    next('/login');
+  } else if (auth && currentUser) {
+    next();
   } else {
-    next() // make sure to always call next()!
+    next();
   }
-})
+});
+
+
 
 
 export default router;

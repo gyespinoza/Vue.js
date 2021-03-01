@@ -4,20 +4,28 @@
    
 
     <div id="app">
-      <!--router-link to="/">Home</!--router-link> |
-      <router-link to="/about">About</router-link>
-      <router-link-- to="/pagina">Pagina 1</router-link-->
-
 
       <b-navbar type="dark" variant="dark">
         <b-icon icon="menu-button-wide" class="text-white" v-b-toggle.sidebarEjemplo></b-icon>
+       
         <b-navbar-nav>
             <b-nav-item v-bind:to="{path:'/'}">Home</b-nav-item>
             <b-nav-item v-bind:to="{path:'/about'}">About</b-nav-item>
             <b-nav-item v-bind:to="{path:'/pagina'}">Pagina</b-nav-item>
-            <a href="#" @click="logout">Logout</a>
         </b-navbar-nav>
+        <b-navbar-nav class="ml-auto">
+           <b-nav-item-dropdown right>
+              <template #button-content>
+                <em>{{usuario}}</em>
+              </template>
+              <b-dropdown-item href="#" @click="profile">Perfil</b-dropdown-item>
+              <b-dropdown-item href="#" @click="logout">Cerrar Sesion</b-dropdown-item>
+            </b-nav-item-dropdown>
+          </b-navbar-nav>
+        </b-collapse>
       </b-navbar>
+      </b-navbar>
+      
 
       <b-sidebar id="sidebarEjemplo" title="Menu" shadow>
           <b-navbar-nav>
@@ -47,12 +55,15 @@ import 'firebase/auth';
     },
     data () {
       return {
-
+        usuario: firebase.auth().currentUser.email //obtiene el usuario que ha iniciado sesion
       }
     },
     methods: {
         logout(){
              firebase.auth().signOut().then(()=>this.$router.replace('/login'))
+        },
+        profile(){
+          this.$router.replace('/profile')
         }
     },
     computed: {

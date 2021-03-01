@@ -29,6 +29,7 @@ var firebaseConfig = {
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 
+
 firebase.auth().onAuthStateChanged(function(){
   new Vue({
     router,
